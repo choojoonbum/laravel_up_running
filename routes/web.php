@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\InvitationController;
+use Illuminate\Support\Facades\URL;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -110,5 +111,18 @@ Route::name('users.')->prefix('users')->group(function () {
             // users.comments.show 라우트 이름으로 등록
         })->name('show');
     });
+});
+
+// 라우트에 서명 추가하기
+Route::get('invitations/{invitation}/{group}', InvitationController::class)->name('invitations')->middleware('signed');
+Route::get('/invitationsLink', function () {
+    // 일반링크
+    //$url = URL::route('invitations', ['invitation' => 5816, 'group' => 678]);
+    // 서명된 링크 생성하기
+    //$url = URL::signedRoute('invitations', ['invitation' => 5816, 'group' => 678]);
+    // 유효기간이 있는 서명된 링크 생성하기
+    $url = URL::temporarySignedRoute('invitations', now()->addHour(4), ['invitation' => 5816, 'group' => 678]);
+
+    return $url;
 });
 
