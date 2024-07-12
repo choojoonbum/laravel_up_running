@@ -242,6 +242,17 @@ Route::get('something-you-cant-do', function (\Illuminate\Http\Request $request)
     abort(403, '접속 권한이 없습니다.');
     abort_unless($request->has('magicToken'), 403);
     abort_if($request->user()->isBanned, 403);
+
+    return response()->make('Hello World!');
+});
+
+// 커스텀 응답
+Route::get('custom-response', function (\Illuminate\Http\Request $request) {
+    //return response()->make('Hello World!');
+    //return response()->json([]);
+    return response()->streamDownload(function () {
+        echo DocumentService::file('myfile')->getContent();
+    }, 'myfile.pdf');
 });
 
 
