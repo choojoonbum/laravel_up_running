@@ -55,8 +55,60 @@ Route::middleware('auth')->group(function () {
 });
 
 //시간당 접속 제한하기
+//특정라우터를 스로틀 미들웨어로 접속 제한하기
 Route::middleware(['throttle:uploads'])->group(function () {
     Route::post('/photos',function () {
 
     });
 });
+
+// 라우트 그룹으로 url 접두사 처리
+Route::prefix('dashboard')->group(function () {
+    Route::get('/', function () {
+        // /dashboard
+    });
+    Route::get('users', function () {
+        // /dashboard/users
+    });
+});
+
+// 모든 라우트 매칭 실패시 대체 라우트 정의
+// 라라벨 5.6 이하 지원안함
+Route::fallback(function () {
+    return 'fallback';
+});
+
+//서브 도메인 라우트
+Route::domain('api.myapp.com')->group(function (){
+    Route::get('/', function () {
+
+    });
+});
+
+//{blogName}.tistory.com
+Route::domain('{account}.myapp.com')->group(function () {
+    Route::get('/', function ($account) {
+
+    });
+
+    Route::get('users/{id}', function ($account, $id) {
+
+    });
+});
+
+//공통 네임스페이스 접두사 지정하기
+Route::namespace('App\Http\Controllers\Dashboard')->group(function () {
+    // App\Http\Controllers\Dashboard\PurchaseController
+    Route::get('dashboard/purchase', 'PurchaseController@index');
+});
+
+// 라우트 그룹의 이름 접두사 지정하기
+Route::name('users.')->prefix('users')->group(function () {
+    Route::name('comments.')->prefix('comments')->group(function () {
+        Route::get('{id}', function () {
+            // /users/comments/{id}의 url 경로
+            // users.comments.show 라우트 이름으로 등록
+        })->name('show');
+    });
+});
+
