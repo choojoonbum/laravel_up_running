@@ -180,4 +180,8 @@ Route::get('events/{event}', function (Conference $event) {
     return view('events.show')->with('event', $event);
 });
 
+// 라우트 캐싱
+// php artisan route:cache
+// php artisan route:clear
+
 
