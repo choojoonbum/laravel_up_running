@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InvitationController;
 use Illuminate\Support\Facades\URL;
+use App\Http\Controllers\TaskController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -98,10 +99,10 @@ Route::domain('{account}.myapp.com')->group(function () {
 });
 
 //공통 네임스페이스 접두사 지정하기
-Route::namespace('App\Http\Controllers\Dashboard')->group(function () {
+/*Route::namespace('App\Http\Controllers\Dashboard')->group(function () {
     // App\Http\Controllers\Dashboard\PurchaseController
     Route::get('dashboard/purchase', 'PurchaseController@index');
-});
+});*/
 
 // 라우트 그룹의 이름 접두사 지정하기
 Route::name('users.')->prefix('users')->group(function () {
@@ -137,4 +138,15 @@ Route::view('/', 'welcome', ['User' => 'Michael']);
 
 // 특정변수를 모든 템플릿에 공유
 // view()->share('variableName', 'variableValue');
+
+/*Route::get('/', [TaskController::class, 'index']);
+
+Route::get('tasks/create', [TaskController::class, 'create']);
+Route::post('tasks', [TaskController::class, 'store']);*/
+
+// 리소스 컨트롤러 연결
+Route::resource('tasks', TaskController::class);
+//Route::apiResource('tasks', TaskController::class);
+
+
 
