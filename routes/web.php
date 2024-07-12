@@ -185,3 +185,83 @@ Route::get('events/{event}', function (Conference $event) {
 // php artisan route:clear
 
 
+// 리다이렉트를 수행하는 방법
+// 글로벌 핼퍼 함수를 사용하여 리다이렉트 응답 객체를 생성하는 방법
+Route::get('redirect-with-helper', function () {
+    return redirect()->to('login');
+});
+
+Route::get('redirect-with-helper-shortcut', function () {
+    return redirect('login');
+});
+
+//퍼사드를 사용하여 리다이렉트 응답 객체를 생성하는 방법
+Route::get('redirect-with-facade', function () {
+    return \Illuminate\Support\Facades\Redirect::to('login');
+});
+
+// Route::redirect() 메서드를 사용하는 방법
+Route::redirect('redirect-by-route', 'login');
+
+//redirect()->route() 라우트명으로 처리 추천
+Route::get('redirect', function () {
+    return redirect()->route('conference.index');
+    //return redirect()->route('conference.index', ['conference' => 99]);
+});
+
+//이전 페이지 이동
+//redirect()->back();
+
+// 데이터를 가지고 리다이렉트
+Route::get('redirect-with-key-value', function () {
+    return redirect('dashboard')->with('error', true);
+});
+Route::get('redirect-with-array', function () {
+    return redirect('dashboard')->with(['error' => true, 'message' => 'Whoops!']);
+});
+
+// 사용자 입력 값을 세션에 저장하고 리다이렉트하기
+Route::get('form', function () {
+    return view('form');
+});
+Route::post('form', function () {
+    return redirect('form')->withInput()->with(['error' => true, 'message' => 'Whoops!']);
+});
+
+// 에러를 포함한 리다이렉트
+Route::post('form', function (\Illuminate\Http\Request $request) {
+    $validator = \Illuminate\Support\Facades\Validator::make($request->all(), $this->validationRules);
+
+    if ($validator->fails()) {
+        return back()->withErrors($validator)->withInput();
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

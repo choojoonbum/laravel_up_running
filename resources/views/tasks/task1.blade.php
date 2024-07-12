@@ -10,6 +10,9 @@
     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
     {{-- @csrf지시어 사용--}}
     @csrf
+
+    {{--withInput() 메서드로 세션에 저장한 값을 old() 함수로 가져올수 있다--}}
+    <input name="username" value="<?= old('username', 'Default username instrutions here')?>">
 </form>
 
 {{--자바스크립트로 token 적용시--}}
@@ -21,3 +24,5 @@
         }
     });
 </script>
+
+
