@@ -148,5 +148,36 @@ Route::post('tasks', [TaskController::class, 'store']);*/
 Route::resource('tasks', TaskController::class);
 //Route::apiResource('tasks', TaskController::class);
 
+// 개별 라우트에서 리소스 확인하기
+Route::get('conferences/{id}', function ($id) {
+    //$conference = Conference::findOrFail($id);
+});
+
+// 묵시적 라우트 모델 바인딩 사용
+Route::get('conference/{conference}', function (Conference $conference) {
+    return view('conference.show')->with('conference', $conference);
+});
+
+// 라우트 모델 바인딩에서 사용되는 엘로퀸트 모델 키 지정
+Route::get('posts/{post:slug}', function (Post $post) {
+    return $post;
+});
+
+// 엘로퀸트 모델을 여러개 바인딩하면서 연관관계의 쿼리 범위를 지정하는 경우(라라벨7 이상)
+Route::get('users/{user}/posts{post:slug}', function (User $user, Post $post) {
+    // $user는 다음의 쿼리를 수행한 결과
+    // {user}는 URL 세그먼트 값이다.
+    // user::find({user})->first();
+
+    // $post는 다음의 쿼리를 수정한 결과
+    // {slug}는 URL 세그먼트 값이다.
+    // User::find({user})->posts()->where('slug', {slug})->first();
+    return $post;
+});
+
+// 명시적 라우트 모델 바인딩 사용(RouteServiceProvider 설정필요)
+Route::get('events/{event}', function (Conference $event) {
+    return view('events.show')->with('event', $event);
+});
 
 

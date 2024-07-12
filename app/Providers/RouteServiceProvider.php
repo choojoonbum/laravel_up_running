@@ -47,6 +47,9 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
         });
+
+        // 모델 바인딩 추가(명시적 라우트 모델 바인딩)
+        Route::model('event', Conference::class);
     }
 
     /**
