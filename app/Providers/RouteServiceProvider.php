@@ -59,5 +59,13 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
         });
+
+        //시간당 접속 제한하기
+        RateLimiter::for('uploads', function (Request $request) {
+            return $request->user()->vipCustomer() ? Limit::none() : Limit::perMinute(100)->by($request->ip())
+                ->response(function () {
+                    return response('커스텀 응답...', 429);
+                });
+        });
     }
 }
