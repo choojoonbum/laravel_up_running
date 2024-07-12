@@ -126,3 +126,15 @@ Route::get('/invitationsLink', function () {
     return $url;
 });
 
+// 뷰에 변수 전달하기
+Route::get('tasks', function () {
+    return view('tasks.index')->with('tasks', ['task' => 'all']);
+});
+
+// Route::view()
+Route::view('/', 'welcome');
+Route::view('/', 'welcome', ['User' => 'Michael']);
+
+// 특정변수를 모든 템플릿에 공유
+// view()->share('variableName', 'variableValue');
+
