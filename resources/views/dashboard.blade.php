@@ -11,3 +11,6 @@
     @parent
     <script src="dashboard.js"></script>
 @endsection
+
+{{--명령어로 생성한 컴포넌트 뷰 템플릿 사용--}}
+<x-alert type="error" :message="$message" id="alertId" name="alertName"></x-alert>

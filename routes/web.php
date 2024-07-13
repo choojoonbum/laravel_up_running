@@ -67,7 +67,7 @@ Route::middleware(['throttle:uploads'])->group(function () {
 // 라우트 그룹으로 url 접두사 처리
 Route::prefix('dashboard')->group(function () {
     Route::get('/', function () {
-        // /dashboard
+        return view('dashboard')->with('message','주의사항을 확인해 주세용!!');
     });
     Route::get('users', function () {
         // /dashboard/users
