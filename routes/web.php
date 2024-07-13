@@ -255,7 +255,18 @@ Route::get('custom-response', function (\Illuminate\Http\Request $request) {
     }, 'myfile.pdf');
 });
 
-
+// 블레이드 테스트용
+Route::get('/home', function () {
+    return view('home')->with('pageName', 'home');
+    return view('jobs');
+});
+Route::get('/side', function () {
+    $obj = new stdClass();
+    $obj->title ='제목';
+    $objArray[] = $obj;
+    $objArray[] = $obj;
+    return view('sidebar')->with('modules', $objArray);
+});
 
 
 
