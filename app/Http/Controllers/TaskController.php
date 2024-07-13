@@ -13,8 +13,9 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return view('welcome');
-        //return view('tasks.index')->with('tasks', Task::all());
+        //return view('welcome');
+        $temp = ['a' => 1,'b' => 2,'c' => 3,'d' => 4,'e' => 5];
+        return view('tasks.task2')->with('tasks', $temp);
     }
 
     /**
