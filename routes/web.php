@@ -268,7 +268,11 @@ Route::get('/side', function () {
     return view('sidebar')->with('modules', $objArray);
 });
 
-
+//라우트의 타입힌트를 통해 서비스를 주입하고 뷰에 데이터로 넘기기
+Route::get('backend/sales', function (\App\Models\Task $analytics) {
+    return view('backend.downs-graphs');
+    //return view('backend.sales-graphs')->with('analytics', $analytics);
+});
 
 
 
