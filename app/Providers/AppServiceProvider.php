@@ -39,5 +39,21 @@ class AppServiceProvider extends ServiceProvider
 
         // 생성한 뷰 컴포저 클래스 등록하기
         view()->composer('sidebar', RecentPostsComposer::class);
+
+        // 서비스 공급자에서 커스텀 블레이드 지시어 등록하기
+        Blade::directive('ifGuest', function () {
+            return "<?php if (auth()->guest()): ?>";
+        });
+
+        // 파라미터를 전달받을 수 있는 커스텀 블레이드 지시어 등록하기
+        Blade::directive('newlinesToBar', function ($expression) {
+            return "<?php echo nl2br({$expression}); ?>";
+        });
+
+        /*// Blade::if 메서드를 사용해서 간단히 처리
+        Blade::if('ifGuest', function () {
+            return auth()->guest();
+        });*/
+
     }
 }
