@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Casts\Json;
+use App\Models\Collections\OrderCollection;
 use App\Models\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -93,5 +94,4 @@ class Contact extends Model
     {
         $this->attributes['email'] = "{$workgroupName}@ourcompany.com";
     }
-
 }

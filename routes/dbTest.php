@@ -38,5 +38,35 @@ Route::get('/test', function () {
         dump($contact->vip);
     });
 
+});
+
+Route::get('/test2', function () {
+
+    // 컬렉션 인스턴스 생성
+    $collection = collect([1,2,3]);
+
+    // 컬렉션에서 짝수를 걸러낸다
+    $odds = $collection->reject(function ($item) {
+        return $item % 2 == 0;
+    });
+
+    // 새로운 컬렉션 생성
+    $multiplied = $collection->map(function ($item) {
+        return $item * 10;
+    });
+
+    // 짝수만 필터후 10을 곱한 컬랙션 생성후 전체합 출력
+    $sum = $collection->filter(function ($item) {
+        return $item % 2 == 0;
+    })->map(function ($item) {
+        return $item * 10;
+    })->sum();
+
+    $orders = \App\Models\Order::all();
+    $billableAmount = $orders->sumBillableAmount(); // OrderCollection 클래스 타입을 반환
+
+    dump($orders);
+
+
 
 });
