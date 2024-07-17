@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\ActiveScope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -32,4 +34,29 @@ class Contact extends Model
 
     // 소프트 삭제시 사용
     protected $dates = ['deleted_at']; // 이 컬럼이 date 포맷이라는 것을 말한다
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // 클로저를 사용한 글로벌 스코프
+        /*static::addGlobalScope('statusGlobal', function (Builder $builder) {
+            $builder->where('status', 'yes');
+        });*/
+        static::addGlobalScope(new ActiveScope);
+
+    }
+
+    // 모델에 로컬 스코프 정의하기
+    public function scopeActiveVips($query)
+    {
+        return $query->where('vip', true)->where('trial', false);
+    }
+
+    // 인자를 요하는 스코프 메서드 정의
+    public function scopeStatus($query, $status)
+    {
+        return $query->where('status', $status);
+    }
+
 }

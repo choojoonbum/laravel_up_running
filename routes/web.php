@@ -260,10 +260,7 @@ Route::get('custom-response', function (\Illuminate\Http\Request $request) {
 // 블레이드 테스트용
 Route::get('/home', function () {
 
-    $contact = Contact::find(5);
-    $contact->delete();
-
-    //return view('home')->with('pageName', 'home');
+    return view('home')->with('pageName', 'home');
     //return view('jobs');
 });
 Route::get('/side', function () {
@@ -279,6 +276,9 @@ Route::get('backend/sales', function (\App\Models\Task $analytics) {
     return view('backend.downs-graphs');
     //return view('backend.sales-graphs')->with('analytics', $analytics);
 });
+
+// 테스트용
+include "dbTest.php";
 
 
 
