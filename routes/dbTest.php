@@ -67,6 +67,12 @@ Route::get('/test2', function () {
 
     dump($orders);
 
+});
 
+// 라우터에서 컬렉션 반환시 문자열(json)로 출력
+Route::get('/test3', function () {
+
+    // makeVisible 메서드로 필요할때 출력가능
+    return Contact::findOrFail(12)->makeVisible('created_at');
 
 });

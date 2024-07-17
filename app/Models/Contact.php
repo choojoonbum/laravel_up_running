@@ -47,6 +47,15 @@ class Contact extends Model
         'options' => Json::class
     ];
 
+    // json으로 노출되면 안되는 속성 감추기
+    public $hidden = ['password', 'remember_token'];
+
+    // 노출된 속성 목록 지정
+    public $visible = ['name', 'email', 'status','full_name'];
+
+    // 데이터베이스에 존재하지 않는 컬럼을 json출력시 처리 가능
+    protected $appends = ['full_name'];
+
     protected static function boot()
     {
         parent::boot();
