@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InvitationController;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\TaskController;
+use App\Models\Contact;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -258,9 +259,11 @@ Route::get('custom-response', function (\Illuminate\Http\Request $request) {
 
 // 블레이드 테스트용
 Route::get('/home', function () {
-    DB::table('users')->where('last_login', '<', now()->subYear())->dd();
 
-    return view('home')->with('pageName', 'home');
+    $contact = Contact::find(5);
+    $contact->delete();
+
+    //return view('home')->with('pageName', 'home');
     //return view('jobs');
 });
 Route::get('/side', function () {
