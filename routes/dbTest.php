@@ -17,9 +17,26 @@ Route::get('/test', function () {
     // Contact::withoutGlobalScopes([\App\Models\Scopes\ActiveScope::class, VipScore::class])->get(); // 여러개의 스코프 적용하지 않기
     Contact::withoutGlobalScopes()->get(); // 모든 스코프 사용하지 않기
 
-    dd($active);
+    $contact = Contact::find(2);
+    $name = $contact->name;
+    $fullName = $contact->full_name;
+    $contact->amount = 11;
+    //$contact->workgroup_name = 'jstott';
 
+    $contact->options = [
+        ['aa' => '11'], ['bb' => '22']
+        ];
+    // $contact->met_at = time();
+    // $contact->save();
+    dump($contact->vip);
 
-    //dd($friends);
+    // 쿼리 결과에 속성값 형변환을 지정
+    $contacts = Contact::select(['id', 'name', 'vip'])->withCasts([
+        'vip' => 'boolean'
+    ])->get();
+    $contacts->each(function ($contact) {
+        dump($contact->vip);
+    });
+
 
 });
