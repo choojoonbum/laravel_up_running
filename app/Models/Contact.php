@@ -121,4 +121,10 @@ class Contact extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // 다대다 역방향 연관관계
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

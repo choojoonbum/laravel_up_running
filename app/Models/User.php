@@ -43,9 +43,21 @@ class User extends Authenticatable
     ];
 
     // 일대다 연관관계
-    public function contacts()
+    /*public function contacts()
     {
         return $this->hasMany(Contact::class);
+    }*/
+
+    // 다대다 연관관계 정의
+    public function contacts()
+    {
+        // return $this->belongsToMany(Contact::class);
+
+        // 피벗 테이블에 필드 추가
+        return $this->belongsToMany(Contact::class)
+            ->withTimestamps() // 피벗테이블에서 created_at, updated_at 사용
+            ->withPivot('status', 'preferred_greeting') // 피벗테이블에 사용할 필드
+            ->as('member_ship'); // pivot 속성명을 member_ship 으로 변경
     }
 
     // 연결을 통한 다수 연관관계 정의

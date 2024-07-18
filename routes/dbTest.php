@@ -152,3 +152,57 @@ Route::get('test6', function () {
     //dd(User::find(1)->phoneNumber);
 
 });
+
+Route::get('test7', function () {
+
+    // 다대다 연관관계인 각각의 모델에서 연관관계 컬렉션을 조회하는 방법
+    $user = User::first();
+    $user->contacts->each(function ($contact) {
+        dump($contact->name);
+    });
+
+    Contact::first()->users()->each(function ($user) {
+        dump($user->name);
+    });
+
+    // 연관관계 모델의 피벗 속성을 통해서 피벗 테이블 레코드 속성 조회
+    User::first()->contacts()->each(function ($content) {
+        dump($content->member_ship->created_at);
+        dump($content->member_ship->status);
+        dump($content->name);
+    });
+});
+
+Route::get('test8', function () {
+
+    // 다대다 연관관계의 모델을 추가하고 해제할때 피벗 테이블 고려하기
+/*    $user = User::find(2);
+    $contact = Contact::first();
+    // 두번째 인자에 피벗테이블 값 전달, 인스턴스로 저장
+    $user->contacts()->save($contact, ['status' => 'donor']);*/
+
+    $user = User::find(4);
+    // 아이디값을 직접 저장
+    //$user->contacts()->attach(1);
+    //$user->contacts()->attach(2, ['status' => 'donor']);
+    //$user->contacts()->attach([1,2,3]);
+/*    $user->contacts()->attach([1 => ['status' => 'inactive'], 2, 3]);*/
+
+    //연결된 연락처 모델 전체 해제
+    //$user->contacts()->detach();
+    //$user->contacts()->detach(1);
+    //$user->contacts()->detach([1,2]);
+
+    // 연관관계 저장 삭제 토클처리
+    //$user->contacts()->toggle([1,2,3]);
+
+    // 피벗 테이블 레코드 변경처리
+    //$user->contacts()->updateExistingPivot(1, ['status' => 'inactive']);
+
+    // 관련된 데이터(유저4)를 전체 삭제후 새로운 연관 관계 추가
+    //$user->contacts()->sync([2]);
+    $user->contacts()->sync([1 => ['status' => 'inactive'], 2, 3]);
+
+
+});
+
