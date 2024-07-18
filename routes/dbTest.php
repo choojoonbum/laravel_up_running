@@ -1,5 +1,8 @@
 <?php
 use App\Models\Contact;
+use App\Models\PhoneNumber;
+use App\Models\User;
+
 Route::get('/test', function () {
 
     // 로컬 스코프 사용
@@ -74,5 +77,78 @@ Route::get('/test3', function () {
 
     // makeVisible 메서드로 필요할때 출력가능
     return Contact::findOrFail(12)->makeVisible('created_at');
+
+});
+
+
+Route::get('test4', function () {
+    //$contact = Contact::first();
+
+    // 연관모델 데이터를 추가하기
+    //$phoneNumber = new PhoneNumber();
+    //$phoneNumber->phone_number = '01026405799';
+    //$contact->phoneNumber()->save($phoneNumber);
+/*
+    $contact->phoneNumber()->saveMany([
+        PhoneNumber::find(1),
+        PhoneNumber::find(2)
+    ]);
+
+    $contact->phoneNumber()->create([
+        'phone_number' => '+123213123123'
+    ]);
+
+    $contact->phoneNumber()->createMany([
+        ['phone_number' => '+010264057111'],
+        ['phone_number' => '213123231']
+    ]);*/
+
+    $user = User::first();
+    $userContacts = $user->contacts;
+
+    // 엘로퀜트는 컬렉션을 반환
+    $donos = $userContacts->filter(function ($contact) {
+        return $contact->status == 'donor';
+    });
+
+    //$lifetimeValue = $contact->orders->reduce(function ($carry, $order) {
+    //    return $carry + $order->amount;
+    //}, 0);
+
+    //$contact = Contact::find(28);
+    //$userName = $contact->user->name;
+
+    $contact = Contact::find(1);
+
+    // 하위 모델에서 연관된 아이템을 추가하거나 연관관계 해제하기
+    //$contact->user()->disassociate();
+    //$contact->save();
+
+    $contact->user()->associate(User::find(1));
+    $contact->save();
+
+});
+
+Route::get('test5', function () {
+    // 연관관계 쿼리 빌더 사용하기
+    //$donors = User::first()->contacts()->where('status', 'donor')->get();
+    //dd($donors);
+
+    // 연관관계가 존재하는 레코드만 찾기
+    //$postsWithComments = \App\Models\Post::has('comments')->get();
+    //$postsWithComments = \App\Models\Post::has('comments', '>=', 5)->get();
+
+    //$usersWithContacts = User::has('contacts')->get();
+    //$usersWithContacts = User::has('contacts.phoneNumber')->dd();
+
+    $jennyIGoYourNumber = Contact::whereHas('phoneNumber', function ($query) {
+        $query->where('phone_number', 'like', '%5799%');
+    })->get();
+});
+
+Route::get('test6', function () {
+
+    dd(User::find(1)->phoneNumbers);
+    //dd(User::find(1)->phoneNumber);
 
 });

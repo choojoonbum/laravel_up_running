@@ -103,4 +103,22 @@ class Contact extends Model
     {
         $this->attributes['email'] = "{$workgroupName}@ourcompany.com";
     }
+
+    // 일대일 연관관계
+    public function phoneNumber()
+    {
+        return $this->hasOne(PhoneNumber::class); // 연락처 하나가 전화번호 하나를 갖는다고 가정
+    }
+
+    // 일대다 연관관계
+    public function phoneNumbers()
+    {
+        return $this->hasMany(PhoneNumber::class);
+    }
+
+    // 일대다 역방향 연관관계
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

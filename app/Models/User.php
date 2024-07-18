@@ -41,4 +41,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // 일대다 연관관계
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    // 연결을 통한 다수 연관관계 정의
+    public function phoneNumbers()
+    {
+        // 연관관계의 연관관계에서 데이터를 가져옴
+        return $this->hasManyThrough(PhoneNumber::class, Contact::class);
+    }
+
+    // 연결을 통한 단일 연관관계 정의
+    public function phoneNumber()
+    {
+        // 연관관계의 연관관계에서 데이터를 가져옴
+        return $this->hasOneThrough(PhoneNumber::class, Contact::class);
+    }
+
 }
