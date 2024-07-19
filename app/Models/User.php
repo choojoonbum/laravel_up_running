@@ -43,10 +43,10 @@ class User extends Authenticatable
     ];
 
     // 일대다 연관관계
-    /*public function contacts()
+    public function contact()
     {
         return $this->hasMany(Contact::class);
-    }*/
+    }
 
     // 다대다 연관관계 정의
     public function contacts()

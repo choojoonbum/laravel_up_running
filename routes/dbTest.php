@@ -258,7 +258,50 @@ Route::get('test10', function () {
         dump($contact);
     });
 
+});
 
+Route::get('test11', function () {
+    // 하위모델 수정시 상위모델에도 타입스템프값 변경
+    $phoneNumber = PhoneNumber::first();
+    $phoneNumber->phone_number = '01026405799';
+    //Contact::first()->phoneNumbers()->save($phoneNumber);
+
+    // 목록 출력시 N+1 쿼리 처리
+    //$contacts = Contact::all();
+    //$contacts = Contact::with('phoneNumbers')->get(); // eager 로딩 N+1문제 해결
+    $contacts = Contact::with('phoneNumbers','users')->get(); // 여러개도 가능
+    foreach ($contacts as $contact) {
+        foreach ($contact->phoneNumbers as $phoneNumber) {
+            //dump($phoneNumber->phone_number." xxxx");
+        }
+        foreach ($contact->users as $user) {
+            //dump($user->name." yyyy");
+        }
+    }
+
+    $contacts = Contact::with(['phoneNumbers' => function ($query){
+        $query->where('phone_number', '01026405799');
+    }])->get();
+
+    $contacts->each(function ($contact) {
+        foreach ($contact->phoneNumbers as $phoneNumber) {
+            //dump($phoneNumber->phone_number);
+        }
+    });
+
+    // 지연 eager 로딩
+/*    $contacs = Contact::all();
+    if($showPhoneNumbers = false) {
+        $contacts->load('phoneNumbers'); // 연관 모델을 불러오기 전까지 한번의 쿼리를 실행해 n+1 문제 해결
+        $contacts->loadMissing('phoneNumbers'); //연관관계를 조회하지 않았을때만 eager 로딩을 하고자 할때
+    }*/
+
+
+    // 연관 관계된 모델의 개수 조회
+    $contacts = User::withCount('phoneNumbers')->get();
+    foreach ($contacts as $contact) {
+        dump($contact->phone_numbers_count);
+    }
 });
 
 
