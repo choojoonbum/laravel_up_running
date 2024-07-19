@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\ViewComposers\RecentPostsComposer;
+use App\Models\Contact;
 use App\Models\Task;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -54,6 +55,29 @@ class AppServiceProvider extends ServiceProvider
         Blade::if('ifGuest', function () {
             return auth()->guest();
         });*/
+
+        // 웰로퀸트 이벤트를 수신하는 코드 등록하기
+        /*
+        $thirdPartyService = new SomeThirdPartyService();
+        Contact::creating(function ($content) use ($thirdPartyService) {
+            try {
+                $thirdPartyService->addContact($content);
+            } catch (\Exception $e) {
+                \Log::error('ThirdPartyService에 새로운 contact 추가 실패');
+                return false; // false 반환시 엘로퀸트 모델 생성이 취소된다.
+            }
+        });
+        // saving - creating, updating  // saved - created, updated
+        */
+        Contact::creating(function ($content) {
+            try {
+                dump($content);
+                dump('이벤트 처리');
+            } catch (\Exception $e) {
+                \Log::error('ThirdPartyService에 새로운 contact 추가 실패');
+                return false; // false 반환시 엘로퀸트 모델 생성이 취소된다.
+            }
+        });
 
     }
 }

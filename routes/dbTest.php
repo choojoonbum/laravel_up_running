@@ -305,6 +305,14 @@ Route::get('test11', function () {
 });
 
 
+Route::get('test12', function () {
+    $contacts = Contact::create([
+        'name' => 'ken hirue2',
+        'email' => 'ken@hirata.com3'
+    ]);
+dump('이벤트실행');
+});
+
 
 
 
