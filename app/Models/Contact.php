@@ -127,4 +127,16 @@ class Contact extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    // 다형성 연관관계 모델 정의
+    public function stars()
+    {
+        return $this->morphMany(Star::class, 'starrable');
+    }
+
+    // 다대다 다형성 연관관계 정의
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
 }

@@ -74,4 +74,10 @@ class User extends Authenticatable
         return $this->hasOneThrough(PhoneNumber::class, Contact::class);
     }
 
+    // 다형성 연관관계를 사용자에게 연결하도록 확장
+    public function stars()
+    {
+        return $this->hasMany(Star::class);
+    }
+
 }

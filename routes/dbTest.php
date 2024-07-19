@@ -2,6 +2,8 @@
 use App\Models\Contact;
 use App\Models\PhoneNumber;
 use App\Models\User;
+use App\Models\Event;
+use App\Models\Star;
 
 Route::get('/test', function () {
 
@@ -203,6 +205,78 @@ Route::get('test8', function () {
     //$user->contacts()->sync([2]);
     $user->contacts()->sync([1 => ['status' => 'inactive'], 2, 3]);
 
+});
+
+Route::get('test9', function () {
+    // 다형성 연관관계 데이터 생성
+    //$contact = Contact::find(2);
+    //$contact->stars()->create();
+
+    //Event::first()->stars()->create();
+
+    // 다형성 연관관계의 모델 인스턴스 조회하기
+    Contact::find(2)->stars()->each(function ($star) {
+        //dump($star);
+    });
+
+    // 다형성 연관관계 모델에서 대상 모델 인스턴스 조회 및 저장
+    $stars = Star::all();
+
+    $stars->each(function ($star) {
+        //dump($star->starrable);
+    });
+
+
+    //$user = User::first();
+    //$event = Event::first();
+    //$event->stars()->create(['user_id' => $user->id]);
+
+    //dd(Star::first()->user);
+    //Contact::find(20)->stars()->create(['user_id' => User::find(7)]);
+
+
+    Contact::find(20)->stars()->create(['user_id' => User::find(7)->id]);
 
 });
+
+use App\Models\Tag;
+Route::get('test10', function () {
+
+    // 다대다 다형성 연관관계 연결
+    $tag = Tag::firstOrCreate(['tag_name' => 'likes-cheese']);
+    $contact = Contact::first();
+    //$contact->tags()->attach($tag->id);
+
+
+    $contact = Contact::first();
+    $contact->tags->each(function ($tag) {
+        //dump($tag);
+    });
+
+    $tag = Tag::first();
+    $tag->contacts->each(function ($contact) {
+        dump($contact);
+    });
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
