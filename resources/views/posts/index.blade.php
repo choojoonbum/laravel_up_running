@@ -13,4 +13,7 @@
 </table>
 
 {{ $posts->links() }}
+
+{{-- 이스케이프 처리 안할때 --}}
+{!! $script !!}
 </html>

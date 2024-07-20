@@ -191,7 +191,7 @@ Route::get('posts/{post:slug}', function (Post $post) {
 });
 
 // 엘로퀸트 모델을 여러개 바인딩하면서 연관관계의 쿼리 범위를 지정하는 경우(라라벨7 이상)
-Route::get('users/{user}/posts{post:slug}', function (User $user, Post $post) {
+Route::get('users/{user}/posts/{post:slug}', function (User $user, Post $post) {
     // $user는 다음의 쿼리를 수행한 결과
     // {user}는 URL 세그먼트 값이다.
     // user::find({user})->first();

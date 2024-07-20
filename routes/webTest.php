@@ -63,4 +63,27 @@ Route::post('file', function (Request $request) {
     }
 });
 
+Route::get('recipes/create', 'RecipeController@create');
+Route::post('recipes', 'RecipeController@store');
+
+// 수동으로 유효성 검증하기
+Route::post('recipes', function (Request $request) {
+    $validator = Validator::make($request->all(), [
+        'title' => 'require|unique:recipes|max:125',
+        'body' => 'require',
+        'email' => new \App\Http\Rules\WhitelistedEmailDomain, // 커스텀 Rule 객체
+    ]);
+
+    if ($validator->fails()) {
+        return redirect('recipes/create')->withErrors($validator)->withInput();
+    }
+});
+
+// 생성한 폼 요청 객체 사용
+Route::post('comments', function (\App\Http\Requests\CreateCommentRequest $request) {
+   // 댓글 저장
+});
+
+
+
 

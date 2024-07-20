@@ -7,3 +7,8 @@
         </ul>
     </div>
 @endif
+
+{{-- 라라벨 5.8이상 --}}
+@error('first_name')
+    <span>{{ $message }}</span>
+@enderror

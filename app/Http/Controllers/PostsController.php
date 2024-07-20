@@ -30,7 +30,8 @@ class PostsController extends Controller
         //return view('posts.index', ['posts' => DB::table('posts')->paginate(10)->onEachSide(3)]);*/
 
         $posts = $this->paginate($posts);
-        return view('posts.index', compact('posts'));
+
+        return view('posts.index', ['posts' => $posts, 'script' => '<script>alert(1);</script>']);
     }
 
     // https://www.itsolutionstuff.com/post/laravel-6-paginate-with-collection-or-arrayexample.html
