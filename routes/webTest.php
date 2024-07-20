@@ -37,4 +37,11 @@ Route::get('messagebag', function () {
     }
 });
 
+// 다국어 기능 사용방법
+Route::get('/es/contacts/show/{id}', function () {
+    // 수동으로 로케일 설정 원래는 서비스 공급자에 적용해야 함
+    App::setLocale('es');
+    return view('contacts.show');
+});
+
 

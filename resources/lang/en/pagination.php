@@ -15,5 +15,11 @@ return [
 
     'previous' => '&laquo; Previous',
     'next' => 'Next &raquo;',
+    'back' => 'Volver al pannel',
+    'back2' => 'Volver al pannel :section dashboard', // 파라미터 적용
+    'task-deletion' => 'You have deleted a task|You have successfully deleted tasks', // 복수 표기정의
+    'task-deletion2' => "{0} You didnt manage to delete anby tasks.|" .
+        "[1,4] You deleted a few tasks.|" .
+        "[5,Inf] You deleted a whole ton of tasks",
 
 ];
