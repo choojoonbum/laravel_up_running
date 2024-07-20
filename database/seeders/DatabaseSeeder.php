@@ -35,8 +35,10 @@ class DatabaseSeeder extends Seeder
         });*/
 
         //state 메서드를 호출하는 커스텀 메서드 정의하기
-        $vip = Contact::factory()->vip()->create();
-        $vips = Contact::factory()->count(3)->vip()->create();
+        //$vip = Contact::factory()->vip()->create();
+        //$vips = Contact::factory()->count(3)->vip()->create();
+
+        Post::factory(50)->create();
 
 
     }

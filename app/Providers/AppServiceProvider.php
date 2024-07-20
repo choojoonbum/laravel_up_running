@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Http\ViewComposers\RecentPostsComposer;
 use App\Models\Contact;
 use App\Models\Task;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -78,6 +79,9 @@ class AppServiceProvider extends ServiceProvider
                 return false; // false 반환시 엘로퀸트 모델 생성이 취소된다.
             }
         });
+
+        // 페이징 부트스트랩 사용
+        Paginator::useBootstrap();
 
     }
 }

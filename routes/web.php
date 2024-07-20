@@ -40,9 +40,17 @@ Route::get('users/{username}', function ($username) {
     return 'b';
 })->where('username', '[A-Za-z]+');
 
-Route::get('posts/{id}/{slug}', function ($id, $slug) {
+// 라우트 그룹의 이름 접두사 지정하기
+Route::name('posts.')->prefix('posts')->group(function () {
+    Route::get('/', [\App\Http\Controllers\PostsController::class, 'index'])->name('index');
+    Route::get('{id}/{slug}', function ($id, $slug) {
+        return 'd';
+    })->where(['id' => '[0-9]+', 'slug' => '[A-Za-z]+' ]);
+});
+
+/*Route::get('posts/{id}/{slug}', function ($id, $slug) {
     return 'c';
-})->where(['id' => '[0-9]+', 'slug' => '[A-Za-z]+' ]);
+})->where(['id' => '[0-9]+', 'slug' => '[A-Za-z]+' ]);*/
 
 // 라우트에 이름 지정하기
 Route::get('members/{id}', [\App\Http\Controllers\MemberController::class, 'show'])->name('members.show');
@@ -279,6 +287,7 @@ Route::get('backend/sales', function (\App\Models\Task $analytics) {
 
 // 테스트용
 include "dbTest.php";
+include "webTest.php";
 
 
 
