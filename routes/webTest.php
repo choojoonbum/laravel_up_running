@@ -44,4 +44,23 @@ Route::get('/es/contacts/show/{id}', function () {
     return view('contacts.show');
 });
 
+// 파일 처리 예제
+Route::post('file', function (Request $request) {
+    dump($request->all());
+    if ($request->hasFile('profile_picture')) { // 사용자가 업로드한 파일이 존재하는지 확인
+        if ($request->file('profile_picture')->isValid()) { // 파일이 성공적으로 업로드 되었는지 확인
+            dump($request->file('profile_picture'));
+        }
+    }
+
+    // Illuminate\Http\UploadedFile 클래스를 사용
+    // 일반적인 파일 업로드 처리 로직
+    if ($request->hasFile('profile_picture')) {
+        $path = $request->profile_picture->store('profiles', 's3');
+        auth()->user()->profile_picture = $path;
+        auth()->user()->save();
+        dump('성공');
+    }
+});
+
 

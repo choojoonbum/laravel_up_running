@@ -6,6 +6,7 @@ use App\Http\Controllers\InvitationController;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\TaskController;
 use App\Models\Contact;
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,8 +32,9 @@ Route::get('users/{id?}', function ($id = 'fallbackId') {
 });*/
 
 //라우터 파라미터의 정규표현식 추가
-Route::get('users/{id}', function ($id) {
-    dd(route('members.show', ['id' => $id])) ;
+Route::get('users/{id}', function ($id, Request $request) {
+    dump($request->segment(1));
+    dump(route('members.show', ['id' => $id])) ;
     return 'a';
 })->where('id', '[0-9]+')->name('members.show');
 
@@ -43,6 +45,21 @@ Route::get('users/{username}', function ($username) {
 // 라우트 그룹의 이름 접두사 지정하기
 Route::name('posts.')->prefix('posts')->group(function () {
     Route::get('/', [\App\Http\Controllers\PostsController::class, 'index'])->name('index');
+    Route::view('signup', 'posts.create')->name('create');
+    Route::post('signup', function (Request $request) {
+        var_dump($request->json('firstName'));
+        dump($request->all());
+        dump($request->except('_token'));
+        dump($request->only('first_name','utm'));
+        dump($request->has('utm'));
+        //http 요청 확인
+        dump($request->method());
+        dump($request->isMethod('post'));
+        // 배열 입력값 접근 확인
+        dump($request->input('employees.0.firstName'));
+        dump($request->input('employees.*.lastName'));
+        dump($request->input('employees.1'));
+    });
     Route::get('{id}/{slug}', function ($id, $slug) {
         return 'd';
     })->where(['id' => '[0-9]+', 'slug' => '[A-Za-z]+' ]);
