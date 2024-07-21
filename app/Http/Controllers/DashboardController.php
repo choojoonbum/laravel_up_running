@@ -13,4 +13,14 @@ class DashboardController extends Controller
         $this->middleware('admin-auth')->only('editUsers');
         $this->middleware('team-member')->except('editUsers');
     }
+
+    // auth() 글로벌 헬퍼를 사용한 예
+    public function dashboard()
+    {
+        if (auth()->guest()) {
+            return redirect('sign-up');
+        }
+
+        return view('dashboard')->with('user', auth()->user());
+    }
 }

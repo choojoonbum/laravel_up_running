@@ -1,16 +1,15 @@
-{{--블레이드 레이아웃 확장하기--}}
-@extends('layouts.master')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Dashboard') }}
+        </h2>
+    </x-slot>
 
-@section('title', 'Dashboard')
-
-@section('content')
-    애플리케이션 대시보드에 오신것을 환영합니다.
-@endsection
-
-@section('footerScripts')
-    @parent
-    <script src="dashboard.js"></script>
-@endsection
-
-{{--명령어로 생성한 컴포넌트 뷰 템플릿 사용--}}
-<x-alert type="error" :message="$message" id="alertId" name="alertName"></x-alert>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <x-jet-welcome />
+            </div>
+        </div>
+    </div>
+</x-app-layout>
