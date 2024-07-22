@@ -10,6 +10,31 @@ use Illuminate\Support\Facades\Event;
 
 class ContactsController extends Controller
 {
+
+    public function __construct()
+    {
+        // 이렇게 호출하면 아래 메서드 전체를 호출하는 것과 같다.
+        // 개별 메서드의 authorize() 호출을 모두 제거할 수 있다.
+        $this->authorizeResource(Contact::class);
+        /*    public function index()
+        {
+            $this->authorize('viewAny', Contact::class);
+        }
+        public function create()
+        {
+            $this->authorize('create', Contact::class);
+        }
+        public function store()
+        {
+            $this->authorize('create', Contact::class);
+        }
+        public function show()
+        {
+            $this->authorize('view', Contact::class);
+        }
+        // edit, update, destory*/
+    }
+
     public function save(Request $request)
     {
         // 데이터 추가
@@ -117,6 +142,22 @@ class ContactsController extends Controller
         // 완전 삭제
         $contact->forceDelete();
         Contact::onlyTrashed()->forceDelete();
+    }
+
+
+    public function edit(Contact $contact)
+    {
+        //if (\Gate::cannot('update-contact', $contact)) {
+        //    abort(403);
+        //}
+
+        // 위 코드를 authorize()로 인가 로직 단순화하기
+        $this->authorize('update-contact', $contact);
+
+        // 현재 인증된 사용자 대신 User객체를 넘겨줄수 있다.
+        $this->authorizeForUser($user, 'update-contact', $contact);
+
+        return view('contacts.edit', ['contact' => $contact]);
     }
 
 

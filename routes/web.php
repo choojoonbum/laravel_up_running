@@ -284,7 +284,8 @@ Route::get('custom-response', function (\Illuminate\Http\Request $request) {
 
 // 블레이드 테스트용
 Route::get('/home', function () {
-
+    dump(auth()->user()); //기본 가드를 사용해서 출력
+    // dump(auth()->guard('api')->user()); // 설정한 가드를 이용해서 출력
     return view('home')->with('pageName', 'home');
     //return view('jobs');
 });
@@ -305,6 +306,7 @@ Route::get('backend/sales', function (\App\Models\Task $analytics) {
 // 테스트용
 include "dbTest.php";
 include "webTest.php";
+include "authTest.php";
 
 
 

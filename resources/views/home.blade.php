@@ -31,4 +31,40 @@
 
 @endcomponent
 
+{{--템플릿에서 인증상태 확인하기--}}
+@auth
+    // 인증된 사용자
+@endauth
+
+@guest
+    // 비회원
+@endguest
+
+{{--
+템플릿에서 특정 가드의 인증 확인하기
+@auth('trainess')
+    // 인증된 사용자
+@endauth
+
+@guest('trainess')
+    // 비회원
+@endguest
+--}}
+
+
+{{--블레이드의 @can지시어 사용하기--}}
+<nav>
+  <a href="/">Home</a>
+  @can('edit-contact', $contact)
+      <a href="{{ route('contact.edit', [$contact->id]) }}">Edit This Contact</a>
+  @endcan
+</nav>
+
+{{--블레이드의 @cannot지시어 사용하기--}}
+<nav>
+    <a href="/">Home</a>
+    @cannot('edit-contact', $contact)
+        <a href="{{ route('contact.edit', [$contact->id]) }}">Edit This Contact</a>
+    @endcannot
+</nav>
 
