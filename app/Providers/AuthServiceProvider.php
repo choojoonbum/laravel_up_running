@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Contact;
 use App\Models\User;
+use App\Policies\ContactPolicy;
 use http\Env\Request;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
@@ -18,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Contact::class => ContactPolicy::class, // 정책 클래스 등록하기, 정책클래스는 조건에 맞게 처리시 자동으로 등록가능하다
     ];
 
     /**
@@ -68,34 +71,6 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
             }
         });
-
     }
 }
 
-class sss implements UserProvider {
-
-    public function retrieveById($identifier)
-    {
-        // TODO: Implement retrieveById() method.
-    }
-
-    public function retrieveByToken($identifier, $token)
-    {
-        // TODO: Implement retrieveByToken() method.
-    }
-
-    public function updateRememberToken(Authenticatable $user, $token)
-    {
-        // TODO: Implement updateRememberToken() method.
-    }
-
-    public function retrieveByCredentials(array $credentials)
-    {
-        // TODO: Implement retrieveByCredentials() method.
-    }
-
-    public function validateCredentials(Authenticatable $user, array $credentials)
-    {
-        // TODO: Implement validateCredentials() method.
-    }
-}

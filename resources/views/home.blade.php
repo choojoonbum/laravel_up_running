@@ -68,3 +68,7 @@
     @endcannot
 </nav>
 
+{{--정책에 대응하여 권한 확인--}}
+@can('update', $contact)
+
+@endcan

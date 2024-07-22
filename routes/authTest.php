@@ -1,4 +1,7 @@
 <?php
+
+use Illuminate\Support\Facades\Gate;
+
 Route::post('login-test',function () {
     // 사용자 인증 시도,
     if (auth()->attempt([
@@ -60,4 +63,31 @@ Route::get('test', function () {
     }
     // 위 소스와 동일한 실행 코드이다.
     // Gate::forUser($user)->check('create-contact');
+});
+
+Route::get('test', function () {
+
+    // 정책에 대응하여 권한 확인하기
+    // 첫번째 파라미터를 정책 클래스의 어떤 메서드를 실행할 것인지 파악
+    // Gate::allows('update',$contact) 실행시 ContactPolicy@update 사용
+    // 게이트
+    if (Gate::denies('update', $contact)) {
+        abort(403);
+    }
+    // 명시적인 인스턴스가 없을때의 게이트
+    if (! Gate::check('create', Contact::class)) {
+        abort(403);
+    }
+    // user
+    if ($user->can('update', $contact)) {
+
+    }
+
+
+    // 정책 클래스를 찾아 관련 메서들 실행하는 핼퍼
+    if (policy($contact)->update($user, $contact)) {
+
+    }
+
+
 });

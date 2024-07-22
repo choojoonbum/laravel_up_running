@@ -160,6 +160,13 @@ class ContactsController extends Controller
         return view('contacts.edit', ['contact' => $contact]);
     }
 
+    // 정책 오버라이드 하기
+    public function before($user, $ability)
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+    }
 
 
 }
