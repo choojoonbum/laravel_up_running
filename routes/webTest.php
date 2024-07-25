@@ -190,3 +190,15 @@ Route::get('redirect', function () {
     // 세션에서 플래시된 데이터를 조회.. 주로 블레이드 템플릿에서 처리된다.
     echo session('message');
 });
+
+//  미들웨어을 라우트 정의해서 사용하기
+Route::get('contacts','ContactController@index')->middleware('ban-delete'); // route get 메서드에서는 미들웨어가 동작하지 않는다.
+
+// 그룹기능에 적용하기 좋다(
+Route::prefix('api')->middleware('ban-delete')->group(function () {
+    // api 관련 모든 라우트
+});
+
+Route::get('company', function () {
+    return view('company.admin');
+})->middleware('auth:owner,view'); // 파라미터 2개이상 넘기는 경우
