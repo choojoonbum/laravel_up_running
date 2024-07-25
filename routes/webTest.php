@@ -96,3 +96,97 @@ Route::get('test-artisan', function () {
 
 
 
+
+Route::get('request-test', function (Request $request) {
+    dump($request->method());
+    dump($request->path());
+    dump($request->url());
+    dump($request->is('pe*'));
+    dump($request->ip());
+    dump($request->header());
+    dump($request->server());
+    dump($request->secure());
+    dump($request->pjax());
+    dump($request->wantsJson());
+    dump($request->isJson());
+    //dump($request->accepts());
+
+    dump($request->file());
+    dump($request->allFiles());
+    //dump($request->hasFile());
+
+    dump($request->flash());
+    //dump($request->flashOnly());
+    //dump($request->flashExcept());
+    dump($request->old());
+    dump($request->flush());
+    dump($request->cookie());
+    //dump($request->hasCookie());
+});
+
+Route::get('route', function () {
+    //return new \Illuminate\Http\Response('Hello');
+    //return response('hello');
+
+    // Http 상태코드와 헤더를 변경한 간단한 http 응답
+    return response('Error!', 400)
+        ->header('X-Header-Name','header-value')
+        ->cookie('cookie-name','cookie-value');
+});
+
+// view 응답 타입 사용하기
+Route::get('xml-structure', function () {
+    return response()->view('xml-structure', 'xmlGetterService')
+    ->header('Content-Type', 'text/xml');
+});
+
+// 응답 타입 사용하기
+Route::get('download', function () {
+    return response()->download('file.csv', 'export.csv', ['header' => 'value']);
+});
+Route::get('order-export', function () {
+    return response()->download('file.csv');
+});
+Route::get('delete-export', function () {
+    return response()->download('file.csv', 'export.csv')->deleteFileAfterSend(); // 원본파일 삭제
+});
+Route::get('response-type/{id}', function ($id) {
+    return response()->file("{$id}.jpg", ['header', 'value']);
+});
+Route::get('json', function () {
+    return response()->json(\App\Models\Contact::all());
+});
+Route::get('non-eloq-json', function () {
+    return response()->json(['tom', 'jerry']);
+});
+Route::get('jsonp', function (Request $request) {
+    return response()->json(\App\Models\Contact::all())->setCallback($request->input('callback'));
+});
+
+
+Route::get('redirect', function () {
+
+    // 단순한  Responseable 객체 만들기
+    return new \App\Http\Responses\MyJson(['name' => 'Sangeetha']);
+
+    // 커스텀 응답 메크로 사용
+    return response()->myJson(['name' => 'Sangeetha']);
+/*    return redirect('accout/payment');
+    return redirect()->to('accout/payment');
+    return redirect()->route('accout.payment');
+    return redirect()->action('AccountController@showPayment');*/
+
+    // 외부 도메인으로 리다이렉트
+    return redirect()->away('http://naver.com');
+    // 이름이 있는 라우터나 컨틀롤러가 라우트 파라미터를 필요로 한다면
+    return redirect()->route('contacts.edit', ['id'=>15]);
+    return redirect()->action('Controller@edit', ['id' => 15]);
+
+    // 유효성 검증에 실패하면...
+    return back()->withInput();
+
+    // 플래시 데이터와 함께 리다이렉트하기
+    return redirect('dashboard')->with('message', 'contact created!');
+    // 세션에서 플래시된 데이터를 조회.. 주로 블레이드 템플릿에서 처리된다.
+    echo session('message');
+});

@@ -83,5 +83,10 @@ class AppServiceProvider extends ServiceProvider
         // 페이징 부트스트랩 사용
         Paginator::useBootstrap();
 
+        // 커스텀 응답 매크로 만들기
+        \Response::macro('myJson', function ($content) {
+            return response(json_encode($content))->withHeaders(['Content-Type' => 'application/json']);
+        });
+
     }
 }
