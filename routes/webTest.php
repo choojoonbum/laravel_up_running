@@ -202,3 +202,20 @@ Route::prefix('api')->middleware('ban-delete')->group(function () {
 Route::get('company', function () {
     return view('company.admin');
 })->middleware('auth:owner,view'); // 파라미터 2개이상 넘기는 경우
+
+
+Route::get('contaner', function () {
+    // 간단한 수동 의존성 주입 예제
+    $mailer = new MailgunMailer($mailgunkey, $mailgunSecret, $mailgunOptions);
+    $userMailer = new \App\container\UserMailer($mailer);
+    $userMailer->welcome($user);
+
+    // 조금더 복잡한 수동 의존성 주입
+    $mailer = new MailgunMailer($mailgunkey, $mailgunSecret, $mailgunOptions);
+    $logger = new Logger($logPath, $minimumLogLevel);
+    $slack = new Slack($slackey, $slackSecret, $channelName, $channelIcon);
+    $userMailer = new \App\container\UserMailer($mailer, $logger, $slack);
+
+    $userMailer->welcome($user);
+});
+
