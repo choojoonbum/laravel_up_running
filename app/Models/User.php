@@ -8,7 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Sanctum\HasApiTokens;
+//use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 
 // Authenticatable 모델에 MustVerifyEmail 트레이드 추가, 이메일검증시 필요
 class User extends Authenticatable implements MustVerifyEmail

@@ -304,14 +304,67 @@ Route::get('backend/sales', function (\App\Models\Task $analytics) {
 });
 
 // 테스트용
-include "dbTest.php";
-include "webTest.php";
-include "authTest.php";
+//include "dbTest.php";
+//include "webTest.php";
+//include "authTest.php";
 
+// 비밀번호 승인 방식으로 요청하기
+Route::get('/tweeter/password-grant-auth', function () {
+    $http = new GuzzleHttp\Client();
 
+    // 패스포트를 사용해 만든 OAuth 서버인 tweeter에 요청을 보낸다.
+    $response = $http->request('GET', 'http://tweeter.test/oauth/token', [
+        'form_parms' => [
+            'grant_type' => 'password',
+            'client_id' => config('tweeter.id'),
+            'client_secret' => config('tweeter.secret'),
+            'username' => 'matt@mattstatuffer.co',
+            'password' => 'my-tweeter-password',
+            'scope' => ''
+        ],
+    ]);
 
+    $thisUsersTokens = json_decode((string) $response->getBody(), true);
+    // 토큰을 가지고 필요한 작업을 처리한다.
+});
 
+// 우리의 Oauth 서버로 사용자를 리다이렉트하는 소비자 애플리케이션
+Route::get('/tweeter/redirect', function () {
+    $query = http_build_query([
+        'client_id' => config('tweeter.id'),
+        'redirect_uri' => \url('tweeter/callback'),
+        'response_type' => 'code',
+        'scope' => ''
+        // 'scope' => 'list-clips add-delete-clips' 특정스코프에 접근 권한 요청
+    ]);
 
+    return redirect('http;//tweeter.test/oauth/authorize?' . $query);
+});
+
+// 예시용 소비자 애플리케이션의 인가 콜백 라우트
+Route::get('/tweeter/callback', function (Request $request) {
+    if ($request->has('error')) {
+
+    }
+    $http = new GuzzleHttp\Client;
+    $response = $http->post('http://tweeter.test/oauth/token', [
+        'form_parms' => [
+            'grant_type' => 'authorization_code',
+            'client_id' => config('tweeter.id'),
+            'client_secret' => config('tweeter.secret'),
+            'redirect' => config('tweeter/callback'),
+            'code' => $request->code,
+        ],
+    ]);
+    $thisUsersTokens = json_decode((string) $response->getBody(), true);
+});
+
+// 사용자가 인증에 사용한 토큰이 특정 행위를 수행할 수 있는 권한이 있는지 확인하기
+Route::get('/events', function () {
+    if (auth()->user()->tokenCan('add-delete-clips')) {
+
+    }
+});
 
 
 

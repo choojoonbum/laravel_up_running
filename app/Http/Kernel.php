@@ -65,5 +65,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'ban-delete' => \App\Http\Middleware\BanDeleteMethod::class, // 라우트 미들웨어 등록
+
+        'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class, // 토큰 권한 확인 미들웨어
+        'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class, // 토큰 권한 확인 미들웨어
     ];
 }

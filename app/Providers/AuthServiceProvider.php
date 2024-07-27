@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -31,6 +32,21 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Passport::routes();
+
+        // 토큰 갱신 기간 정의하기
+        Passport::tokensExpireIn(now()->addDays(15));
+
+        // 갱신 토큰이 다시 인증 받기 전에 얼마나 유지할지
+        Passport::refreshTokensExpireIn(now()->addDays(30));
+
+        // 패스포트 스코프 정의하기
+        Passport::tokensCan([
+            'list-clips' => '사운드 클립 목록',
+            'add-delete-clips' => '새 사운드 클립을 추가하고 오래된 것은 지운다.',
+            'admin-account' => '관리자 계정 상세 정보'
+        ]);
 
         // 클로저 요청 가이드 정의하기
         \Auth::viaRequest('token-hash', function ($request) {

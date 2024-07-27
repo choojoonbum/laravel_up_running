@@ -19,7 +19,7 @@ class Authenticate extends Middleware
             return route('login');
         }
     }
-
+/*
     // 파라미터를 받는 라우트 미들웨어 정의하기
     public function handle($request, Closure $next, ...$guards)
     {
@@ -28,4 +28,5 @@ class Authenticate extends Middleware
         }
         return route('login');
     }
+*/
 }
