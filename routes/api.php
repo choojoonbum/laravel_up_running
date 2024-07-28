@@ -46,4 +46,8 @@ Route::get('clips', function () {
     // 액세스 토큰이 나열된 스코프중 하나를 가지고 있다.
 })->middleware('scope:list-clips,add-delete-clips');
 
+// 대체 라우터 정의하기
+Route::fallback(function () {
+    return response()->json(['message' => '라우트를 찾을 수 없습니다.'], 404);
+})->name('api.fallback.404');
 
