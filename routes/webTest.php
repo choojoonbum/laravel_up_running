@@ -219,3 +219,40 @@ Route::get('contaner', function () {
     $userMailer->welcome($user);
 });
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AssignmentCreated;
+// 매일러블을 전송하는 몇 가지 방법
+Route::get('mailable', function () {
+    // 단순 전송
+    Mail::to($user)->send(new AssignmentCreated($trainer, $trainee));
+    //CC/BCC/etc. 와 함께
+    Mail::to($user1)->cc($user2)->bcc($user3)->send(new AssignmentCreated($trainer, $trainee));
+    // 컬렉션을 이용해서
+    Mail::to('me@app.com')->bcc(\App\Models\User::all())->send(new AssignmentCreated($trainer, $trainee));
+
+    // 다른 드라이버 지정
+    Mail::mailer('postmark')->to($request->user())->send(new OrderShipped($order));
+});
+
+// 브라우저에서 메일러블 클래스의 결과 확인하기
+Route::get('preview-assignment-created-mailable', function () {
+    // 라우트에 메일러블 렌더링 하기
+    $trainer = Trainer::first();
+    $trainee = Trainee::first();
+
+    return new AssignmentCreated($trainer, $trainee);
+});
+
+Route::get('queue', function () {
+    // 메일 객체를 큐에 넣는다.
+    Mail::queue(new AssignmentCreated());
+
+    $when = now()->addMinutes(30);
+    // 메일을 언제 큐에서 가져와서 보낼지 정하고 지연하게 해준다.
+    Mail::later($when, new AssignmentCreated());
+
+    // 메일이 추가될 큐나 커넥션을 지정하고 싶으면 메일러블 객체애서 onConnection, onQueue 메서드를 추가한다.
+    $message = (new AssignmentCreated($trainer, $trainee))->onConnection('sqs')->onQueue('emails');
+    Mail::to($user)->queue($message);
+});
+

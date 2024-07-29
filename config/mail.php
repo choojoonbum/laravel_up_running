@@ -12,8 +12,8 @@ return [
     | and used as needed; however, this mailer will be used by default.
     |
     */
-
-    'default' => env('MAIL_MAILER', 'smtp'),
+     // log로 설정시 메일이 log파일에 저장이 된다
+    'default' => env('MAIL_MAILER', 'log'),
 
     /*
     |--------------------------------------------------------------------------
